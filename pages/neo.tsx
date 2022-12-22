@@ -1,50 +1,66 @@
 import React from 'react'
-import { GetStaticProps } from 'next'
 import { NearEarthObject } from '../types/types'
 import NeoList from '../components/NeoList'
+import { GetStaticProps } from 'next'
+import NeoTable from '../components/NeoTable'
 
 type Props = {
-       nearEarthObjects: {
-        (date: String) : [NearEarthObject],
-        (date: String) : [NearEarthObject],
-        (date: String) : [NearEarthObject],
-        (date: String) : [NearEarthObject],
-        (date: String) : [NearEarthObject],
-        (date: String) : [NearEarthObject],
-        (date: String) : [NearEarthObject],
-        (date: String) : [NearEarthObject],
-    }
+    nearEarthObjects: {
+     (date: String) : [NearEarthObject],
+     (date: String) : [NearEarthObject],
+     (date: String) : [NearEarthObject],
+     (date: String) : [NearEarthObject],
+     (date: String) : [NearEarthObject],
+     (date: String) : [NearEarthObject],
+     (date: String) : [NearEarthObject],
+     (date: String) : [NearEarthObject],
+ }
 }
 
-
-
-const neo = (props: Props) => {
-const days = Object.keys(props.nearEarthObjects).sort()
-console.log(props.nearEarthObjects)
-//Renders li tags for each day. Nested list contains data for each asteroid for that day
-const NeoListRender = days.map(
-    (day) => {
-        return (
-            <li key = {`${day}`}>
-                <h3 className='text-3xl underline'>
-                    {day}
-                </h3>
-                    <NeoList internalList = {props.nearEarthObjects[day as keyof typeof props.nearEarthObjects] as [NearEarthObject]} day = {day}/>
-                <br />
-            </li>
-        )
-    }
-)
-return (
+const Neo = (props: Props) => {
+    console.log(props.nearEarthObjects)
+    const days = Object.keys(props.nearEarthObjects).sort()
+    const NeoTableRender = days.map(
+        (day) => {
+            return (
+                <div key = {`${day}`} className = 'text-white ml-8'>
+                    <h1 className='text-4xl underline text-white'>{day}</h1>
+                        {props.nearEarthObjects[day as keyof typeof props.nearEarthObjects][0] as [NearEarthObject] && <NeoTable internalList = {props.nearEarthObjects[day as keyof typeof props.nearEarthObjects] as [NearEarthObject]} day = {day}/>}
+                        {!props.nearEarthObjects[day as keyof typeof props.nearEarthObjects][0]  && <div>Looks like the Earth is safe today, folks! <br /></div>}
+                </div>
+            )
+        }
+    )
+    const NeoListRender = days.map(
+        (day) => {
+            return (
+                <div key = {`${day}`} className = 'text-white ml-8'>
+                    <h1 className='text-4xl underline text-white'>{day}</h1>
+                        {props.nearEarthObjects[day as keyof typeof props.nearEarthObjects][0] as [NearEarthObject] && <NeoList internalList = {props.nearEarthObjects[day as keyof typeof props.nearEarthObjects] as [NearEarthObject]} day = {day}/>}
+                        {!props.nearEarthObjects[day as keyof typeof props.nearEarthObjects][0]  && <div><li>Looks like the Earth is safe today, folks!</li> <br /></div>}
+                </div>
+            )
+        }
+    )
+  return (
     <div>
-        <ul>
-            {NeoListRender}
-        </ul>
+        <h1 className='text-5xl underline text-white flex justify-center'>Potentially Dangerous Objects Near the Earth</h1>
+        <div className='inline-flex w-full'>
+            <div className='border mt-4 w-1/2 h-fit'>
+                <br />
+                {NeoTableRender}
+                <br />
+            </div>
+            <div className='flex-column w-1/2 pl-16'>
+                {NeoListRender}
+            </div>
+        </div>
     </div>
   )
 }
 
-export default neo
+export default Neo
+
 export const getStaticProps: GetStaticProps = async () => {
     
     //This server side fetch returns information about all potentially hazardous asteroids from the past week. 

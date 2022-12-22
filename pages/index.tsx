@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react'
-import HomePage from '../components/HomePage'
+import HomePage from '../components/DailyImageSlider'
 import { GetStaticProps } from 'next'
 
 
@@ -19,8 +19,10 @@ type Props = {  nasaImages: [
 
 const index = (props: Props) => {
   return (
-    <div>
-      <HomePage nasaImages={props.nasaImages}/>
+    <div className='flex justify-center'>
+      <div className = 'w-4/5'>
+        <HomePage nasaImages={props.nasaImages}/>
+      </div>
     </div>
   )
 }
