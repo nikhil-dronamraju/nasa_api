@@ -1,8 +1,9 @@
 import React from 'react'
-import { NearEarthObject } from '../types/types'
+import { NearEarthObject } from '../types/neoTypes'
 import NeoList from '../components/NeoList'
 import { GetStaticProps } from 'next'
 import NeoTable from '../components/NeoTable'
+import Navbar from '../components/Navbar'
 
 type Props = {
     nearEarthObjects: {
@@ -18,7 +19,6 @@ type Props = {
 }
 
 const Neo = (props: Props) => {
-    console.log(props.nearEarthObjects)
     const days = Object.keys(props.nearEarthObjects).sort()
     const NeoTableRender = days.map(
         (day) => {
@@ -44,6 +44,7 @@ const Neo = (props: Props) => {
     )
   return (
     <div>
+        <Navbar/>
         <h1 className='text-5xl underline text-white flex justify-center'>Potentially Dangerous Objects Near the Earth</h1>
         <div className='inline-flex w-full'>
             <div className='border mt-4 w-1/2 h-fit'>
@@ -64,7 +65,7 @@ export default Neo
 export const getStaticProps: GetStaticProps = async () => {
     
     //This server side fetch returns information about all potentially hazardous asteroids from the past week. 
-    const data = await fetch ("https://api.nasa.gov/neo/rest/v1/feed?start_date=2022-12-16&api_key=JpPWSEIssK0P1d0COv2HlTnHrsWNpqH2twYvVA1C")
+    const data = await fetch (`https://api.nasa.gov/neo/rest/v1/feed?start_date=2022-12-16&api_key=${process.env.NASA_API_KEY}`)
     const res = (await data.json()).near_earth_objects
 
     //Filter res to where it only returns potentially hazardous asteroids

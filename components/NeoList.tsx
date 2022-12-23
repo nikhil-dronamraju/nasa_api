@@ -1,5 +1,5 @@
 import React from 'react'
-import { NearEarthObject } from '../types/types'
+import { NearEarthObject } from '../types/neoTypes'
 
 type Props = {
     internalList: [NearEarthObject],

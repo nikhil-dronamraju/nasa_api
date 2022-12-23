@@ -2,6 +2,7 @@
 import React from 'react'
 import HomePage from '../components/DailyImageSlider'
 import { GetStaticProps } from 'next'
+import Navbar from '../components/Navbar'
 
 
 type Props = {  nasaImages: [
@@ -21,6 +22,7 @@ const index = (props: Props) => {
   return (
     <div className='flex justify-center'>
       <div className = 'w-4/5'>
+        <Navbar/>
         <HomePage nasaImages={props.nasaImages}/>
       </div>
     </div>
@@ -30,9 +32,8 @@ const index = (props: Props) => {
 export default index
 
 export const getStaticProps: GetStaticProps = async () => {
-  const data = await fetch ("https://api.nasa.gov/planetary/apod?api_key=JpPWSEIssK0P1d0COv2HlTnHrsWNpqH2twYvVA1C&start_date=2022-12-17")
+  const data = await fetch (`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}&start_date=2022-12-17`)
   const res = await data.json()
-  //console.log(res.copyright)
   return {props:{
       nasaImages: res 
       }
